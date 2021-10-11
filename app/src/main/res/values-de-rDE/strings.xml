@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">all about clubs</string>
+    <string name="clubs_value">%d Millionen</string>
+    <string name="clubs_description"><![CDATA[<b>%s </b> konnte bislang %d Siege auf europäischer Ebene erreichen.”]]></string>
+    <string name="alert_error">Fehler</string>
+</resources>

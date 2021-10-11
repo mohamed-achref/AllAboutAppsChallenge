@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">all about clubs</string>
+    <string name="clubs_value">%d millions</string>
+    <string name="clubs_description"><![CDATA[<b>%s </b>has so far achieved %d victories at European level.]]></string>
+    <string name="alert_error">Error</string>
+    <string name="alert_okay" translatable="false">Okay</string>
+</resources>

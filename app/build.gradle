@@ -1,0 +1,201 @@
+apply plugin: 'BuildPlugin'
+apply plugin: 'com.android.application'
+apply plugin: 'com.github.jk1.dependency-license-report'
+apply plugin: 'at.allaboutapps.gradle-plugin'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: "androidx.navigation.safeargs.kotlin"
+apply plugin: "kotlin-parcelize"
+
+android {
+    signingConfigs {
+        debug {
+            storeFile file('debug.keystore')
+            storePassword 'android'
+            keyAlias = 'aaaDebugKey'
+            keyPassword 'android'
+        }
+        aaaDebugKey {
+            storeFile file('debug.keystore')
+            storePassword 'android'
+            keyAlias = 'aaaDebugKey'
+            keyPassword 'android'
+        }
+        releaseKey {
+            storeFile file('debug.keystore')
+            storePassword 'android'
+            keyAlias = 'aaaDebugKey'
+            keyPassword 'android'
+        }
+    }
+    defaultConfig {
+        applicationId "at.allaboutapps.app"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        multiDexEnabled true
+        vectorDrawables.useSupportLibrary false // only for < API 21
+
+        manifestPlaceholders = [apiKey: "secret"] // use with ${apiKey} in manifest
+
+        resConfigs "de"
+//        minSdkVersion 23
+//        targetSdkVersion 30
+//        versionCode 1
+//        versionName '1.0'// todo specify default locale(s)
+    }
+
+    buildFeatures {
+        viewBinding true
+    }
+
+    compileOptions {
+        // Flag to enable support for the new language APIs
+        // https://developer.android.com/studio/write/java8-support
+        coreLibraryDesugaringEnabled true
+//        sourceCompatibility JavaVersion.VERSION_1_8
+//        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    buildTypes {
+        debug {
+            aaptOptions {
+                // Speed up debug builds
+                cruncherEnabled = false
+            }
+            // prevent crashlytics from updating its id
+            ext.alwaysUpdateBuildId = false
+        }
+    }
+
+    flavorDimensions "environment"
+
+    productFlavors {
+        development {
+            dimension "environment"
+            ext.neverBuildRelease = true
+            signingConfig signingConfigs.debug
+            buildConfigField "String", "SERVER_API_URL", "\"https://public.allaboutapps.at\""
+        }
+        staging {
+            dimension "environment"
+            ext.neverBuildRelease = true
+            signingConfig signingConfigs.debug
+
+            buildConfigField "String", "SERVER_API_URL", "\"https://staging.example.com\""
+        }
+        live {
+            dimension "environment"
+            signingConfig signingConfigs.debug
+
+            buildConfigField "String", "SERVER_API_URL", "\"https://www.example.com\""
+        }
+    }
+
+    packagingOptions {
+        exclude 'LICENSE.txt'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/ASL2.0'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/NOTICE'
+    }
+
+    dexOptions {
+        javaMaxHeapSize "4g"
+        preDexLibraries true
+    }
+
+    sourceSets {
+        // generate oss license html to build folder
+        main.assets.srcDirs += "${project.buildDir}/a3generated"
+    }
+//    compileSdkVersion 30
+//    buildToolsVersion '30.0.3'
+}
+
+import com.github.jk1.license.importer.XmlReportImporter
+
+licenseReport {
+    outputDir = "${project.buildDir}/a3generated/licenses"
+    projects = [project] + project.subprojects
+    configurations = ['liveReleaseRuntimeClasspath']
+    allowedLicensesFile = new File("$projectDir/../oss_licenses/src/main/assets/allowed_licenses.json")
+    excludeGroups = ['at.allaboutapps.*']
+    excludes = [
+
+    ]
+    importers = [
+            // Add excluded licenses back
+            new XmlReportImporter("More", new File("$projectDir/../oss_licenses/src/main/assets/more_licenses.xml"))
+    ]
+}
+
+dependencies {
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'com.google.android.material:material:1.3.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
+
+    implementation project(':networking')
+    implementation project(':unwrapretrofit')
+    implementation project(':oss_licenses')
+    implementation project(':glide')
+
+    implementation Dependencies.KotlinStdLib
+    implementation Dependencies.MaterialComponents
+
+    // ViewBinding helper
+    implementation Dependencies.ViewBindingDelegate
+
+    // aaa libs
+    implementation Dependencies.A3Utilities
+    implementation Dependencies.A3RecyclerViewDecorations
+
+    // Android Kotlin Extensions by Google
+    // https://developer.android.com/kotlin/ktx
+    implementation Dependencies.AndroidXCoreKtx
+    implementation Dependencies.AndroidXPreferenceManager
+
+    // Support library depends on this lightweight import
+    implementation Dependencies.AndroidXLifecycleViewModel
+    implementation Dependencies.AndroidXLifecycleLiveData
+
+    kapt Dependencies.AndroidXLifecycleCompiler
+
+    // optional - ReactiveStreams support for LiveData
+    implementation Dependencies.AndroidXLifecycleReactiveStreams
+
+
+    // logging
+    implementation Dependencies.Timber
+
+    implementation Dependencies.RxJava3
+    implementation Dependencies.RxKotlin3
+
+    // networking
+    implementation Dependencies.RetrofitAdapterRxJava3
+    implementation Dependencies.RetrofitConverterMoshi
+
+    implementation Dependencies.OkHttpLoggingInterceptor
+    implementation Dependencies.Moshi
+    implementation Dependencies.MoshiAdapters
+
+    // dependency injection
+    implementation Dependencies.Dagger
+    implementation Dependencies.DaggerAndroid
+    implementation Dependencies.DaggerAndroidSupport
+    kapt Dependencies.DaggerCompiler
+    kapt Dependencies.DaggerCompilerAndroid
+
+    // Leak Canary
+    // debugImplementation because LeakCanary should only run in debug builds.
+    debugImplementation Dependencies.LeakCanary
+
+    implementation Dependencies.AndroidXNavigationFragment
+    implementation Dependencies.AndroidXNavigationUI
+}
+
+
