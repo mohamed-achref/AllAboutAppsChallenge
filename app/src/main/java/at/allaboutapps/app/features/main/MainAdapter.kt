@@ -1,4 +1,4 @@
-package at.allaboutapps.app.features.start
+package at.allaboutapps.app.features.main
 
 import android.content.Context
 import android.view.LayoutInflater

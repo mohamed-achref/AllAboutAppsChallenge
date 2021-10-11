@@ -82,13 +82,13 @@ android {
             ext.neverBuildRelease = true
             signingConfig signingConfigs.debug
 
-            buildConfigField "String", "SERVER_API_URL", "\"https://staging.example.com\""
+            buildConfigField "String", "SERVER_API_URL", "\"https://public.allaboutapps.at\""
         }
         live {
             dimension "environment"
             signingConfig signingConfigs.debug
 
-            buildConfigField "String", "SERVER_API_URL", "\"https://www.example.com\""
+            buildConfigField "String", "SERVER_API_URL", "\"https://public.allaboutapps.at\""
         }
     }
 

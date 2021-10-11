@@ -7,7 +7,7 @@ import com.bumptech.glide.Glide
 import at.allaboutapps.app.R
 import at.allaboutapps.app.base.BaseFragment
 import at.allaboutapps.app.databinding.FragmentClubDetailBinding
-import at.allaboutapps.app.features.main.Constants.KEY_CLUB
+import at.allaboutapps.app.utils.Constants.KEY_CLUB
 import at.allaboutapps.app.networking.model.Club
 import com.zhuinden.fragmentviewbindingdelegatekt.viewBinding
 

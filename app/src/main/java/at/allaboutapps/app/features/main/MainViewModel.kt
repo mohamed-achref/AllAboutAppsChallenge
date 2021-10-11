@@ -1,4 +1,4 @@
-package at.allaboutapps.app.features.start
+package at.allaboutapps.app.features.main
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

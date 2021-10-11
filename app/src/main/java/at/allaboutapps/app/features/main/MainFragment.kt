@@ -11,9 +11,8 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import at.allaboutapps.app.R
 import at.allaboutapps.app.base.BaseFragment
 import at.allaboutapps.app.databinding.FragmentMainBinding
-import at.allaboutapps.app.features.start.MainAdapter
-import at.allaboutapps.app.features.start.MainViewModel
 import at.allaboutapps.app.networking.model.Club
+import at.allaboutapps.app.utils.Utils
 import com.zhuinden.fragmentviewbindingdelegatekt.viewBinding
 import java.util.stream.Collectors
 

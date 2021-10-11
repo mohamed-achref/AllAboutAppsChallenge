@@ -1,4 +1,4 @@
-package at.allaboutapps.app.features.main
+package at.allaboutapps.app.utils
 
 import android.content.Context
 import androidx.appcompat.app.AlertDialog

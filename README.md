@@ -1,4 +1,4 @@
-# AllAboutApps Coding Challenge
+# AllAboutApps Challenge
 
 A club app design created for a test skills for android developer position
 
